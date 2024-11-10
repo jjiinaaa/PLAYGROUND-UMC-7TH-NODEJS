@@ -9,6 +9,8 @@ export const addShop = async (shop) => {
       `INSERT INTO shop (areaId, name, address, rating) VALUES (?, ?, ?, ?);`,
       [shop.areaId, shop.name, shop.address, shop.rating]
     );
+
+    return result.insertId;
   } catch (error) {
     throw new Error(
       `(${error}) 오류가 발생했습니다. 요청 파라미터를 확인해주세요.`
@@ -27,7 +29,7 @@ export const getShop = async (shopId) => {
     const [shop] = await pool.query(`SELECT * FROM shop WHERE id = ?;`, [
       shopId,
     ]);
-
+    console.log();
     if (shop.length === 0) {
       return null;
     }
