@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import cors from "cors";
 import express from "express";
+import {}
 import { handleShopAdd } from "./controllers/shop.controller.js";
 
 dotenv.config();
@@ -18,6 +19,8 @@ app.use(express.urlencoded({ extended: false })); // urlencoded 파싱 미들웨
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
+
+app.post("/api/v1/users/signup", handleUserSignup);
 
 app.post("/api/v1/shop/addshop", handleShopAdd);
 
