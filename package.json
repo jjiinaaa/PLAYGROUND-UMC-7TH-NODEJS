@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "dependencies": {
+    "@prisma/client": "^5.22.0",
     "accepts": "^2.0.0",
     "anymatch": "^3.1.3",
     "array-flatten": "^3.0.0",
@@ -83,6 +84,7 @@
     "parseurl": "^1.3.3",
     "path-to-regexp": "^8.2.0",
     "picomatch": "^2.3.1",
+    "prisma": "^5.22.0",
     "proxy-addr": "^2.0.7",
     "pstree.remy": "^1.1.8",
     "qs": "^6.13.0",
@@ -116,7 +118,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/index.js",
-    "dev": "nodemon --exec node src/index.js"
+    "dev": "nodemon -e js,json,prisma --exec \"prisma generate && node src/index.js\""
   },
   "author": "",
   "license": "ISC",

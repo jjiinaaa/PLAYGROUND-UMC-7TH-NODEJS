@@ -34,6 +34,10 @@ export const bodyToUser = (body) => {
 };
 
 export const responseFromUser = ({ user, preferences }) => {
+  console.log("user:", user); // preferences 전체 출력
+  const preferFoods = preferences.map(
+    (preference) => preference.preferFood.name
+  );
   const {
     password,
     email,
@@ -44,7 +48,7 @@ export const responseFromUser = ({ user, preferences }) => {
     detailAddress,
     phoneNumber,
     point,
-  } = user[0];
+  } = user;
   return {
     password,
     email,
@@ -54,7 +58,7 @@ export const responseFromUser = ({ user, preferences }) => {
     address,
     detailAddress,
     phoneNumber,
-    preferences,
+    preferFoods,
     point,
   };
 };

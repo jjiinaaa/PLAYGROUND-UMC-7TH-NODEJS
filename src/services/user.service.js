@@ -8,8 +8,6 @@ import {
 
 // mission
 export const userSignUp = async (data) => {
-  console.log("userSignUp 함수 실행");
-  console.log("data:", data.birth);
   const {
     password,
     email,
@@ -38,9 +36,6 @@ export const userSignUp = async (data) => {
     point,
   });
 
-  console.log("joinUserId에 addUser 함수 값 넣어짐.");
-  console.log("joinUserId:", joinUserId);
-
   if (joinUserId === null) {
     throw new Error("이미 가입된 이메일입니다."); // 이미 가입된 이메일일 경우 에러 발생
   }
@@ -54,7 +49,6 @@ export const userSignUp = async (data) => {
 
   const user = await getUser(joinUserId); // getUser 함수를 통해 가입된 User 정보를 조회
   const preferencesData = await getUserPreferencesByUserId(joinUserId); // getUserPreferencesByUserId 함수를 통해 가입된 User의 선호 음식 정보를 조회
-  console.log("user 정보:", user);
 
-  return responseFromUser({ user, preferencesData }); // responseFromUser 함수를 통해 User 정보와 선호 음식 정보를 DTO로 변환하여 반환
+  return responseFromUser({ user, preferences: preferencesData });
 };
