@@ -1,8 +1,14 @@
-import { responseFormMission } from "../dtos/mission.dto.js";
+import {
+  responseFormMission,
+  responseFormUserMission,
+} from "../dtos/mission.dto.js";
 import {
   addMission,
   getMission,
   getmissionDeadline,
+  addUserMission,
+  getUserMission,
+  getUserMissionDeadline,
 } from "../repositories/mission.repository.js";
 
 export const missionAdd = async (mission) => {
@@ -16,4 +22,20 @@ export const missionAdd = async (mission) => {
   const missionDeadline = await getmissionDeadline(deadline);
   const missionData = await getMission(joinMissionId);
   return responseFormMission(missionData, missionDeadline);
+};
+
+export const missionStatusChange = async (userMission) => {
+  const { userId, missionId } = userMission;
+  const joinUserMissionId = await addUserMission({
+    userId,
+    missionId,
+  });
+  const userMissionData = await getUserMission(joinUserMissionId);
+  const missionData = await getMission(missionId);
+  const userMissionDeadline = await getUserMissionDeadline(joinUserMissionId);
+  return responseFormUserMission(
+    userMissionData,
+    missionData,
+    userMissionDeadline
+  );
 };

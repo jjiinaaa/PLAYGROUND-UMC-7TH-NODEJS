@@ -56,5 +56,5 @@ export const userSignUp = async (data) => {
   const preferencesData = await getUserPreferencesByUserId(joinUserId); // getUserPreferencesByUserId 함수를 통해 가입된 User의 선호 음식 정보를 조회
   console.log("user 정보:", user);
 
-  return responseFromUser({ user, preferences }); // responseFromUser 함수를 통해 User 정보와 선호 음식 정보를 DTO로 변환하여 반환
+  return responseFromUser({ user, preferencesData }); // responseFromUser 함수를 통해 User 정보와 선호 음식 정보를 DTO로 변환하여 반환
 };
