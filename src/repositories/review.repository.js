@@ -33,9 +33,10 @@ export const getReview = async (reviewId) => {
   const connection = await pool.getConnection();
 
   try {
-    const [review] = await pool.query(`SELECT * FROM review WHERE id = ?;`, [
-      reviewId,
-    ]);
+    const [review] = await pool.query(
+      `SELECT * FROM review WHERE id = ?;`,
+      reviewId
+    );
     if (review.length === 0) {
       return null;
     }
