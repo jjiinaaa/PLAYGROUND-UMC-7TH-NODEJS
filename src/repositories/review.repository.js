@@ -25,3 +25,27 @@ export const getReview = async (reviewId) => {
 
   return review;
 };
+
+export const getShopReviews = async (shopId, cursor) => {
+  console.log("getShopReviews shopId : ", shopId, typeof shopId);
+  const reviews = await prisma.review.findMany({
+    select: {
+      userId: true,
+      shopId: true,
+      content: true,
+      rating: true,
+    },
+    where: {
+      shopId,
+      id: {
+        gt: cursor,
+      }, // id가 0보다 큰 경우
+    },
+    orderBy: {
+      id: "desc", // id 기준으로 내림차순 정렬
+    },
+    take: 5, // 5개의 데이터만 가져오기
+  });
+
+  return reviews;
+};

@@ -12,3 +12,10 @@ export const responseFormReview = (review) => {
     rating,
   };
 };
+
+export const responsePreviewReview = (data) => {
+  return {
+    reviewData: data,
+    cursorId: data.length ? data[data.length - 1].id : null,
+  };
+};
