@@ -4,6 +4,7 @@ import {
   missionAdd,
   missionStatusChange,
   shopMissionListGet,
+  userMissionListGet,
 } from "../services/mission.service.js";
 
 export const handleMissionAdd = async (req, res, next) => {
@@ -24,6 +25,15 @@ export const handleListShopMissions = async (req, res, next) => {
   const { shopId } = req.params;
   const missions = await shopMissionListGet(
     parseInt(shopId),
+    typeof req.query.cursor === "string" ? parseInt(req.query.cursor) : 0
+  );
+  res.status(StatusCodes.OK).json({ result: missions });
+};
+
+export const handleListUserMissions = async (req, res, next) => {
+  const { userId } = req.params;
+  const missions = await userMissionListGet(
+    parseInt(userId),
     typeof req.query.cursor === "string" ? parseInt(req.query.cursor) : 0
   );
   res.status(StatusCodes.OK).json({ result: missions });

@@ -1,6 +1,10 @@
 import StatusCodes from "http-status-codes";
 import { bodyToReview } from "../dtos/review.dto.js";
-import { reviewAdd, shopReviewListGet } from "../services/review.service.js";
+import {
+  reviewAdd,
+  shopReviewListGet,
+  userReviewListGet,
+} from "../services/review.service.js";
 
 export const handleReviewAdd = async (req, res, next) => {
   console.log("Review Add Request");
@@ -17,6 +21,15 @@ export const handleListShopReviews = async (req, res, next) => {
   // shopId 형변환
   const reviews = await shopReviewListGet(
     parseInt(shopId),
+    typeof req.query.cursor === "string" ? parseInt(req.query.cursor) : 0
+  );
+  res.status(StatusCodes.OK).json({ result: reviews });
+};
+
+export const handleListUserReviews = async (req, res, next) => {
+  const { userId } = req.params;
+  const reviews = await userReviewListGet(
+    parseInt(userId),
     typeof req.query.cursor === "string" ? parseInt(req.query.cursor) : 0
   );
   res.status(StatusCodes.OK).json({ result: reviews });

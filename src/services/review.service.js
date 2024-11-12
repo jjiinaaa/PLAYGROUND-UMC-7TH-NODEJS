@@ -6,6 +6,7 @@ import {
   addReview,
   getReview,
   getShopReviews,
+  getUserReviews,
 } from "../repositories/review.repository.js";
 
 export const reviewAdd = async (review) => {
@@ -23,5 +24,10 @@ export const reviewAdd = async (review) => {
 export const shopReviewListGet = async (shopId, cursor) => {
   const reviews = await getShopReviews(shopId, cursor);
   console.log("shopReviewListGet reviews : ", reviews);
+  return responsePreviewReview(reviews);
+};
+
+export const userReviewListGet = async (userId, cursor) => {
+  const reviews = await getUserReviews(userId, cursor);
   return responsePreviewReview(reviews);
 };

@@ -6,11 +6,13 @@ import { handleShopAdd } from "./controllers/shop.controller.js";
 import {
   handleReviewAdd,
   handleListShopReviews,
+  handleListUserReviews,
 } from "./controllers/review.controller.js";
 import {
   handleMissionAdd,
   handleMissionStatusChange,
   handleListShopMissions,
+  handleListUserMissions,
 } from "./controllers/mission.controller.js";
 
 dotenv.config();
@@ -35,6 +37,8 @@ app.post("/api/v1/review/addreview", handleReviewAdd);
 app.post("/api/v1/mission/addmission", handleMissionAdd);
 app.post("/api/v1/mission/status", handleMissionStatusChange);
 
+app.get("/api/v1/users/:userId/reviews", handleListUserReviews);
+app.get("/api/v1/users/:userId/missions", handleListUserMissions);
 app.get("/api/v1/shops/:shopId/reviews", handleListShopReviews);
 app.get("/api/v1/shops/:shopId/missions", handleListShopMissions);
 

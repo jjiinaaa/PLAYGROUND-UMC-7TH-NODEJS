@@ -27,7 +27,6 @@ export const getReview = async (reviewId) => {
 };
 
 export const getShopReviews = async (shopId, cursor) => {
-  console.log("getShopReviews shopId : ", shopId, typeof shopId);
   const reviews = await prisma.review.findMany({
     select: {
       userId: true,
@@ -47,5 +46,27 @@ export const getShopReviews = async (shopId, cursor) => {
     take: 5, // 5개의 데이터만 가져오기
   });
 
+  return reviews;
+};
+
+export const getUserReviews = async (userId, cursor) => {
+  const reviews = await prisma.review.findMany({
+    select: {
+      userId: true,
+      shopId: true,
+      content: true,
+      rating: true,
+    },
+    where: {
+      userId,
+      id: {
+        gt: cursor,
+      },
+    },
+    orderBy: {
+      id: "desc",
+    },
+    take: 5,
+  });
   return reviews;
 };

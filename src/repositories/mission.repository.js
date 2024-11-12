@@ -133,3 +133,22 @@ export const getShopMissions = async (shopId, cursor) => {
 
   return missions;
 };
+
+export const getUserMissions = async (userId, cursor) => {
+  const missions = await prisma.userMission.findMany({
+    select: {
+      userId: true,
+      missionId: true,
+      status: true,
+    },
+    where: {
+      userId,
+      id: {
+        gt: cursor,
+      },
+    },
+    orderBy: { id: "desc" },
+    take: 5,
+  });
+  return missions;
+};

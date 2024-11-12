@@ -11,6 +11,7 @@ import {
   getUserMission,
   getUserMissionDeadline,
   getShopMissions,
+  getUserMissions,
 } from "../repositories/mission.repository.js";
 
 export const missionAdd = async (mission) => {
@@ -46,5 +47,10 @@ export const missionStatusChange = async (userMission) => {
 
 export const shopMissionListGet = async (shopId, cursor) => {
   const missions = await getShopMissions(shopId, cursor);
+  return responsePreviewMission(missions);
+};
+
+export const userMissionListGet = async (userId, cursor) => {
+  const missions = await getUserMissions(userId, cursor);
   return responsePreviewMission(missions);
 };
