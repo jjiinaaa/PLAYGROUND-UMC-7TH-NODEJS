@@ -1,6 +1,5 @@
 export const bodyToShop = (body) => {
   const { areaId, name, address, rating } = body;
-  console.log("request body : ", body);
   return {
     areaId,
     name,
@@ -10,11 +9,11 @@ export const bodyToShop = (body) => {
 };
 
 export const responseFormShop = (shop) => {
-  console.log("response request : ", shop);
+  const { areaId, name, address, rating } = shop;
   return {
-    areaId: shop[0].areaId,
-    name: shop[0].name,
-    address: shop[0].address,
-    rating: shop[0].rating,
+    areaId,
+    name,
+    address,
+    rating,
   };
 };

@@ -16,18 +16,20 @@ datasource db {
 model user {
   id             Int       @id @default(autoincrement())
   password       String    @db.VarChar(45)
-  email          String    @unique @db.VarChar(45)
+  email          String    @db.VarChar(45) @unique
   name           String    @db.VarChar(20)
   gender         String    @db.VarChar(5)
   birth          String    @db.VarChar(45)
   address        String    @db.VarChar(50)
   detailAddress  String    @db.VarChar(40)
   phoneNumber    String    @db.VarChar(15)
-  point          Float     @db.Double @default(0)
-  createdAt      DateTime  @db.DateTime(6) @default(now())
-  updatedAt      DateTime  @db.DateTime(6) @updatedAt
+  point          Int       @db.Int @default(0)
+  createdAt      DateTime? @db.DateTime(6) @default(now())
+  updatedAt      DateTime? @db.DateTime(6) @updatedAt
 
-  userPreferences userPreferFood[]
+  userPreferences userPreferFood[] // user가 선호하는 음식
+  reviews         review[] // user가 작성한 review
+  userMissions    userMission[] // user가 가진 mission
 
   @@map("user")
 }
@@ -35,19 +37,81 @@ model user {
 model userPreferFood{
   id            Int         @id @default(autoincrement())
   user          user        @relation(fields: [userId], references: [id])
-  userId        Int         
+  userId        Int         @db.Int
   preferFood    preferFood  @relation(fields: [preferFoodId], references: [id])
-  preferFoodId  Int     
+  preferFoodId  Int         @db.Int
 
   @@map("user_prefer_food")
 }
 
 model preferFood {
   id        Int      @id @default(autoincrement())
-  name      String   @db.VarChar(45)
+  name      String   @db.VarChar(45) 
 
-  userPreferences userPreferFood[]
+  userPreferences userPreferFood[] // 선호하는 음식을 가진 user
 
   @@map("prefer_food")
 }
 
+model area {
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(45)
+
+  shops     shop[] // area에 속한 shop
+  @@map("area")
+}
+
+model shop {
+  id        Int      @id @default(autoincrement())
+  area      area     @relation(fields: [areaId], references: [id])
+  areaId    Int
+  name      String   @db.VarChar(45)
+  address   String   @db.VarChar(100)
+  rating    Float    @db.Double @default(0)
+
+  reviews   review[] // shop에 달린 review
+  missions  mission[] // shop에 달린 mission
+
+  @@map("shop")
+}
+
+model review {
+  id        Int         @id @default(autoincrement())
+  user      user        @relation(fields: [userId], references: [id])
+  userId    Int         @db.Int
+  shop      shop        @relation(fields: [shopId], references: [id])
+  shopId    Int         @db.Int
+  content   String?     @db.Text
+  createdAt DateTime?   @db.DateTime(6) @default(now())
+  updatedAt DateTime?   @db.DateTime(6) @updatedAt
+  rating    Float       @db.Double
+
+  @@map("review")
+}
+
+model mission {
+  id          Int        @id @default(autoincrement())
+  shop        shop       @relation(fields: [shopId], references: [id])
+  shopId      Int        @db.Int
+  point       Int        @db.Int @default(0)
+  deadline    DateTime?  @db.DateTime()
+  missionText String?    @db.Text
+  createdAt   DateTime?  @db.DateTime(6) @default(now())
+  updatedAt   DateTime?  @db.DateTime(6) @updatedAt
+
+  userMissions userMission[] // mission을 가진 user
+  @@map("mission")
+}
+
+model userMission {
+  id  Int @id @default(autoincrement())
+  user user @relation(fields: [userId], references: [id])
+  userId Int @db.Int
+  mission mission @relation(fields: [missionId], references: [id])
+  missionId Int @db.Int
+  status Int @db.Int @default(0)
+  createdAt DateTime? @db.DateTime(6) @default(now())
+  updatedAt DateTime? @db.DateTime(6) @updatedAt
+
+  @@map("user_mission")
+}

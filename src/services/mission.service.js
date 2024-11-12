@@ -32,7 +32,9 @@ export const missionStatusChange = async (userMission) => {
   });
   const userMissionData = await getUserMission(joinUserMissionId);
   const missionData = await getMission(missionId);
+  console.log("missionData : ", missionData);
   const userMissionDeadline = await getUserMissionDeadline(joinUserMissionId);
+  console.log("userMissionDeadline : ", userMissionDeadline);
   return responseFormUserMission(
     userMissionData,
     missionData,

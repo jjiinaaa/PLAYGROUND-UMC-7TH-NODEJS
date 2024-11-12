@@ -42,7 +42,6 @@ export const userSignUp = async (data) => {
 
   for (const preference of preferences) {
     // const preference of data.preferences로 data.preferences에 있는 선호 음식 정보를 하나씩 가져와 setPreference 함수를 실행
-    console.log("setPreference 함수 실행 직전");
     await setPreference(joinUserId, preference); // setPreference 함수를 통해 선호 음식 정보를 DB에 저장
   }
   ``;

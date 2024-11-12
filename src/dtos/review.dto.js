@@ -4,7 +4,7 @@ export const bodyToReview = (body) => {
 };
 
 export const responseFormReview = (review) => {
-  const { userId, shopId, content, rating } = review[0];
+  const { userId, shopId, content, rating } = review;
   return {
     userId,
     shopId,

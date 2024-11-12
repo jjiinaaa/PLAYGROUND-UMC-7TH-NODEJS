@@ -11,15 +11,7 @@ import { userSignUp } from "../services/user.service.js";
 
 export const handleUserSignup = async (req, res, next) => {
   try {
-    console.log("회원가입을 요청했습니다.");
-    console.log("body:", req.body); // 요청 body 데이터 확인
-
-    const { birth } = req.body; // birth 데이터만 추출
-    console.log("birth:", birth); // birth 값 확인
-
     const user = await userSignUp(bodyToUser(req.body));
-    console.log("사용자 반환: ", user);
-
     res.status(StatusCodes.OK).json({ result: user });
   } catch (error) {
     console.error("회원가입 처리 중 오류:", error);

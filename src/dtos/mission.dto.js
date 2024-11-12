@@ -4,10 +4,11 @@ export const bodyToMission = (body) => {
 };
 
 export const responseFormMission = (mission, deadlineData) => {
-  const { shopId, point, deadline, missionText } = mission[0];
+  const { shopId, point, deadline, missionText } = mission;
   return {
     shopId,
     point,
+    deadline,
     deadlineData,
     missionText,
   };
@@ -19,8 +20,8 @@ export const bodyToUserMission = (body) => {
 };
 
 export const responseFormUserMission = (userMission, missionData, deadline) => {
-  const { userId, missionId, status } = userMission[0];
-  const { missionText, point } = missionData[0];
+  const { userId, missionId, status } = userMission;
+  const { missionText, point } = missionData;
   return {
     userId,
     missionId,

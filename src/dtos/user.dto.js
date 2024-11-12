@@ -12,9 +12,6 @@ export const bodyToUser = (body) => {
     preferences,
   } = body;
   try {
-    console.log("body received in bodyToUser:", body); // body 전체 출력
-    console.log("body.birth:", birth); // birth 필드만 출력
-
     return {
       password, // password 필드가 없으면 빈 문자열로 설정
       email,
@@ -34,7 +31,6 @@ export const bodyToUser = (body) => {
 };
 
 export const responseFromUser = ({ user, preferences }) => {
-  console.log("user:", user); // preferences 전체 출력
   const preferFoods = preferences.map(
     (preference) => preference.preferFood.name
   );
