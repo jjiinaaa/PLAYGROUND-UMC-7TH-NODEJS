@@ -1,6 +1,7 @@
 import {
   responseFormMission,
   responseFormUserMission,
+  responsePreviewMission,
 } from "../dtos/mission.dto.js";
 import {
   addMission,
@@ -9,6 +10,7 @@ import {
   addUserMission,
   getUserMission,
   getUserMissionDeadline,
+  getShopMissions,
 } from "../repositories/mission.repository.js";
 
 export const missionAdd = async (mission) => {
@@ -40,4 +42,9 @@ export const missionStatusChange = async (userMission) => {
     missionData,
     userMissionDeadline
   );
+};
+
+export const shopMissionListGet = async (shopId, cursor) => {
+  const missions = await getShopMissions(shopId, cursor);
+  return responsePreviewMission(missions);
 };

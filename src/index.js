@@ -10,6 +10,7 @@ import {
 import {
   handleMissionAdd,
   handleMissionStatusChange,
+  handleListShopMissions,
 } from "./controllers/mission.controller.js";
 
 dotenv.config();
@@ -35,6 +36,7 @@ app.post("/api/v1/mission/addmission", handleMissionAdd);
 app.post("/api/v1/mission/status", handleMissionStatusChange);
 
 app.get("/api/v1/shops/:shopId/reviews", handleListShopReviews);
+app.get("/api/v1/shops/:shopId/missions", handleListShopMissions);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

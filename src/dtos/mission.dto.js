@@ -31,3 +31,10 @@ export const responseFormUserMission = (userMission, missionData, deadline) => {
     deadline,
   };
 };
+
+export const responsePreviewMission = (data) => {
+  return {
+    missionData: data,
+    cursorId: data.length ? data[data.length - 1].id : null,
+  };
+};
