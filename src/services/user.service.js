@@ -1,4 +1,5 @@
 import { responseFromUser } from "../dtos/user.dto.js";
+import { DuplicateUserEmailError } from "../errors.js";
 import {
   addUser,
   getUser,
@@ -37,7 +38,7 @@ export const userSignUp = async (data) => {
   });
 
   if (joinUserId === null) {
-    throw new Error("이미 가입된 이메일입니다."); // 이미 가입된 이메일일 경우 에러 발생
+    throw new DuplicateUserEmailError("이미 가입된 이메일입니다.", data); // 이미 가입된 이메일일 경우 에러 발생
   }
 
   for (const preference of preferences) {
@@ -47,7 +48,19 @@ export const userSignUp = async (data) => {
   ``;
 
   const user = await getUser(joinUserId); // getUser 함수를 통해 가입된 User 정보를 조회
+
+  if (user === null) {
+    throw new DuplicateUserEmailError("사용자 정보를 찾을 수 없습니다.", user);
+  }
+
   const preferencesData = await getUserPreferencesByUserId(joinUserId); // getUserPreferencesByUserId 함수를 통해 가입된 User의 선호 음식 정보를 조회
+
+  if (preferencesData === null) {
+    throw new DuplicateUserEmailError(
+      "선호 음식을 찾을 수 없습니다.",
+      preferencesData
+    );
+  }
 
   return responseFromUser({ user, preferences: preferencesData });
 };

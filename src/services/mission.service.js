@@ -3,6 +3,7 @@ import {
   responseFormUserMission,
   responsePreviewMission,
 } from "../dtos/mission.dto.js";
+import { DuplicateUserEmailError } from "../errors.js";
 import {
   addMission,
   getMission,
@@ -22,8 +23,28 @@ export const missionAdd = async (mission) => {
     deadline,
     missionText,
   });
+  if (joinMissionId === null) {
+    throw new DuplicateUserEmailError(
+      "해당 상점이 존재하지 않습니다.",
+      mission
+    );
+  }
   const missionDeadline = await getmissionDeadline(deadline);
+
+  if (missionDeadline === null) {
+    throw new DuplicateUserEmailError(
+      "미션 종료 기한을 잘못 입력하였습니다.",
+      missionDeadline
+    );
+  }
   const missionData = await getMission(joinMissionId);
+
+  if (joinMissionId === null) {
+    throw new DuplicateUserEmailError(
+      "해당 상점이 존재하지 않습니다.",
+      mission
+    );
+  }
   return responseFormMission(missionData, missionDeadline);
 };
 
@@ -33,11 +54,24 @@ export const missionStatusChange = async (userMission) => {
     userId,
     missionId,
   });
+
+  if (joinUserMissionId === null) {
+    throw new DuplicateUserEmailError("이미 참여한 미션입니다.", userMission);
+  }
+
   const userMissionData = await getUserMission(joinUserMissionId);
+
   const missionData = await getMission(missionId);
-  console.log("missionData : ", missionData);
+
   const userMissionDeadline = await getUserMissionDeadline(joinUserMissionId);
-  console.log("userMissionDeadline : ", userMissionDeadline);
+
+  if (userMissionDeadline === null) {
+    throw new DuplicateUserEmailError(
+      "기한이 지났습니다.",
+      userMissionDeadline
+    );
+  }
+
   return responseFormUserMission(
     userMissionData,
     missionData,

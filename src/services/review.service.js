@@ -2,6 +2,7 @@ import {
   responseFormReview,
   responsePreviewReview,
 } from "../dtos/review.dto.js";
+import { DuplicateUserEmailError } from "../errors.js";
 import {
   addReview,
   getReview,
@@ -17,13 +18,15 @@ export const reviewAdd = async (review) => {
     content,
     rating,
   });
+  if (joinReviewId === null) {
+    throw new DuplicateUserEmailError("해당 상점이 존재하지 않습니다.", review);
+  }
   const reviewData = await getReview(joinReviewId);
   return responseFormReview(reviewData);
 };
 
 export const shopReviewListGet = async (shopId, cursor) => {
   const reviews = await getShopReviews(shopId, cursor);
-  console.log("shopReviewListGet reviews : ", reviews);
   return responsePreviewReview(reviews);
 };
 

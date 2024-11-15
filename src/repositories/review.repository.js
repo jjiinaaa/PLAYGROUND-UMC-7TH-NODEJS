@@ -7,7 +7,6 @@ export const addReview = async (review) => {
     },
   });
   if (!checkShop) {
-    console.log("해당 상점이 존재하지 않습니다.");
     return null;
   }
   const created = await prisma.review.create({

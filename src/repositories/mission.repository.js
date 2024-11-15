@@ -5,10 +5,7 @@ export const addMission = async (mission) => {
     where: { id: mission.shopId },
   });
 
-  if (!checkShop) {
-    console.log("해당 상점이 존재하지 않습니다.");
-    return null;
-  }
+  if (!checkShop) null;
 
   const created = await prisma.mission.create({ data: mission });
   return created.id;
@@ -17,15 +14,11 @@ export const addMission = async (mission) => {
 export const getmissionDeadline = async (deadline) => {
   const deadlineTime = new Date(deadline);
   const currentTime = new Date();
-  console.log("deadlind: ", deadlineTime, "\n", "currentTime: ", currentTime);
 
   try {
     const nowTime = currentTime.getTime(); // 현재 시간을 가져옴
     const endTime = deadlineTime.getTime(); // 미션의 마감 시간을 가져옴
-    if (endTime < nowTime) {
-      console.log("미션 종료 기한을 잘못 입력하였습니다.");
-      return null;
-    }
+    if (endTime < nowTime) return null;
 
     if (nowTime < endTime) {
       let sec = parseInt(endTime - nowTime) / 1000;
@@ -38,9 +31,7 @@ export const getmissionDeadline = async (deadline) => {
       return `${days}일 ${hour}시간 ${min}분 ${sec}초 남았습니다.`;
     }
   } catch (error) {
-    throw new Error(
-      `(${error}) deadline 오류가 발생했습니다. 요청 파라미터를 확인해주세요.`
-    );
+    throw new Error(`&{error}, 요청 파라미터를 확인해주세요.`);
   }
 };
 
@@ -58,10 +49,7 @@ export const addUserMission = async (userMission) => {
     where: { userId, missionId },
   });
 
-  if (checkUserMission) {
-    console.log("이미 참여한 미션입니다.");
-    return null;
-  }
+  if (checkUserMission) return null;
 
   const created = await prisma.userMission.create({ data: userMission });
   return created.id;
@@ -85,10 +73,7 @@ export const getUserMissionDeadline = async (userMissionId) => {
   const createdAt = new Date(userMissionCreatedAt.createdAt).getTime();
   const deadline = new Date(userMissionDeadline.deadline).getTime();
 
-  if (deadline < createdAt) {
-    console.log("기한이 지났습니다.");
-    return null;
-  }
+  if (deadline < createdAt) return null;
 
   if (createdAt < deadline) {
     let sec = parseInt(deadline - createdAt) / 1000;

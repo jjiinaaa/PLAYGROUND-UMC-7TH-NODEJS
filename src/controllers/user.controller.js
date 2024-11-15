@@ -10,11 +10,9 @@ import { bodyToUser } from "../dtos/user.dto.js";
 import { userSignUp } from "../services/user.service.js";
 
 export const handleUserSignup = async (req, res, next) => {
-  try {
-    const user = await userSignUp(bodyToUser(req.body));
-    res.status(StatusCodes.OK).json({ result: user });
-  } catch (error) {
-    console.error("회원가입 처리 중 오류:", error);
-    next(error);
-  }
+  console.log("User Signup Request");
+  console.log("Request Body:", req.body);
+
+  const user = await userSignUp(bodyToUser(req.body));
+  res.status(StatusCodes.OK).success(user);
 };
