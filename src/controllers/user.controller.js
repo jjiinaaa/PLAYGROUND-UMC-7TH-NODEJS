@@ -11,6 +11,8 @@ import { userSignUp } from "../services/user.service.js";
 
 export const handleUserSignup = async (req, res, next) => {
   /*
+    #swagger.ignore = false
+    #swagger.tags = ['user-controller']
     #swagger.summary = '회원 가입 API';
     #swagger.requestBody = {
       required: true,
@@ -19,6 +21,7 @@ export const handleUserSignup = async (req, res, next) => {
           schema: {
             type: "object",
             properties: {
+              password: { type: "string" },
               email: { type: "string" },
               name: { type: "string" },
               gender: { type: "string" },
@@ -26,6 +29,7 @@ export const handleUserSignup = async (req, res, next) => {
               address: { type: "string" },
               detailAddress: { type: "string" },
               phoneNumber: { type: "string" },
+              point: { type: "number" },
               preferences: { type: "array", items: { type: "number" } }
             }
           }
@@ -44,9 +48,16 @@ export const handleUserSignup = async (req, res, next) => {
               success: {
                 type: "object",
                 properties: {
+                  password: { type: "string" },
                   email: { type: "string" },
                   name: { type: "string" },
-                  preferCategory: { type: "array", items: { type: "string" } }
+                  gender: { type: "string" },
+                  birth: { type: "string", format: "date" },
+                  address: { type: "string" },
+                  detailAddress: { type: "string" },
+                  phoneNumber: { type: "string" },
+                  point: { type: "number" },
+                  preferences: { type: "array", items: { type: "number" } }
                 }
               }
             }
@@ -67,7 +78,7 @@ export const handleUserSignup = async (req, res, next) => {
                 properties: {
                   errorCode: { type: "string", example: "U001" },
                   reason: { type: "string" },
-                  data: { type: "object" }
+                  data: { type: "object", example: null }
                 }
               },
               success: { type: "object", nullable: true, example: null }

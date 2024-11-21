@@ -51,7 +51,7 @@ app.get("/openapi.json", async (req, res, next) => {
       description: "UMC 7th Node.js test project",
     },
     host: "localhost:3000",
-  }; // swagger 문서 정보
+  };
 
   const result = await swaggerAutogen(options)(outputFile, routes, doc); // swagger 문서 생성
   res.json(result ? result.data : null);
