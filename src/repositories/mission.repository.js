@@ -31,7 +31,7 @@ export const getmissionDeadline = async (deadline) => {
       return `${days}일 ${hour}시간 ${min}분 ${sec}초 남았습니다.`;
     }
   } catch (error) {
-    throw new Error(`&{error}, 요청 파라미터를 확인해주세요.`);
+    throw new Error(`${error}, 요청 파라미터를 확인해주세요.`);
   }
 };
 

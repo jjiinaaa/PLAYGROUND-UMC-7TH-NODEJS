@@ -1,6 +1,8 @@
 import dotenv from "dotenv";
 import cors from "cors";
 import express from "express";
+import swaggerAutogen from "swagger-autogen";
+import swaggerUiExpress from "swagger-ui-express";
 import { handleUserSignup } from "./controllers/user.controller.js";
 import { handleShopAdd } from "./controllers/shop.controller.js";
 import {
@@ -20,6 +22,40 @@ dotenv.config();
 
 const app = express();
 const port = process.env.PORT;
+
+app.use(
+  "/docs",
+  swaggerUiExpress.serve,
+  swaggerUiExpress.setup(
+    {},
+    {
+      swaggerOptions: {
+        url: "/openapi.json",
+      },
+    }
+  )
+);
+
+app.get("/openapi.json", async (req, res, next) => {
+  // #swagger.ignore = true : 해당 API는 문서화하지 않음
+  const options = {
+    openapi: "3.0.0",
+    disableLogs: true,
+    writeOutputFile: false,
+  }; // swagger 옵션
+  const outputFile = "/dev/null"; // swagger 파일 출력 금지
+  const routes = ["./src/index.js"]; // swagger 문서화할 파일 경로
+  const doc = {
+    info: {
+      title: "UMC 7th Study",
+      description: "UMC 7th Node.js test project",
+    },
+    host: "localhost:3000",
+  }; // swagger 문서 정보
+
+  const result = await swaggerAutogen(options)(outputFile, routes, doc); // swagger 문서 생성
+  res.json(result ? result.data : null);
+});
 
 // 미들웨어 : 요청과 응답 사이에 실행되는 함수
 
@@ -45,6 +81,13 @@ app.use(cors()); // cors 미들웨어 추가
 app.use(express.static("public")); // 정적 파일 제공
 app.use(express.json()); // json 파싱 미들웨어 추가
 app.use(express.urlencoded({ extended: false })); // urlencoded 파싱 미들웨어 추가
+
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "http://example.com"],
+    allowedHeaders: ["x-auth-token"],
+  })
+);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
