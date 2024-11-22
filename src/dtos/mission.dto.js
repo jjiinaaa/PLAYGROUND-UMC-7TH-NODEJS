@@ -1,5 +1,7 @@
 export const bodyToMission = (body) => {
-  const { shopId, point, deadline, missionText } = body;
+  const { shopId, point, missionText } = body;
+  const deadline = new Date(body.deadline);
+
   return { shopId, point, deadline, missionText };
 };
 

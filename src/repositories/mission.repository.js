@@ -1,19 +1,30 @@
 import { prisma } from "../db.config.js";
 
 export const addMission = async (mission) => {
+  console.log("mission:", mission);
   const checkShop = await prisma.shop.findFirst({
     where: { id: mission.shopId },
   });
 
+  console.log("checkshop", checkShop);
   if (!checkShop) null;
 
-  const created = await prisma.mission.create({ data: mission });
+  console.log(typeof mission.deadline);
+  console.log("mission deadeline:", mission.deadline);
+  const created = await prisma.mission
+    .create({ data: mission })
+    .catch((err) => {
+      console.log(err);
+    });
+  console.log(created.id);
   return created.id;
 };
 
 export const getmissionDeadline = async (deadline) => {
-  const deadlineTime = new Date(deadline);
+  console.log("deadlind:", deadline);
+  const deadlineTime = deadline;
   const currentTime = new Date();
+  console.log("deadlindTime:", deadlineTime);
 
   try {
     const nowTime = currentTime.getTime(); // 현재 시간을 가져옴

@@ -88,10 +88,10 @@ export const handleReviewAdd = async (req, res, next) => {
 
 export const handleListShopReviews = async (req, res, next) => {
   /*
-    #swagger.ignore = false
-    #swagger.tags = ['review-controller']
+    #swagger.ignore = false;
+    #swagger.tags = ['review-controller'];
     #swagger.summary = '가게별 리뷰 목록 조회 API';
-    #swagger.description = '가게별 리뷰 목록 조회 API입니다.'
+    #swagger.description = '가게별 리뷰 목록 조회 API입니다.';
     #swagger.responses[200] = {
       description: "가게별 리뷰 목록 조회 성공 응답",
       content: {
@@ -122,9 +122,36 @@ export const handleListShopReviews = async (req, res, next) => {
         }
       }
     }
-    #swagger.responses[400] = {
-      decsription: "가게별 리뷰 목록 조회 실패 응답"
-    }
+     #swagger.responses[400] = {
+      description: "리뷰 등록 실패 응답",
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              resultType: { type: "string", example: "FAIL" },
+              error: {
+                type: "object",
+                properties: {
+                  errorCode: { type: "string", example: "U400" },
+                  reason: { type: "string" },
+                  data: { 
+                    type: "object", 
+                    example: {
+                      userId: { type: "number" },
+                      shopId: { type: "number" },
+                      content: { type: "string" },
+                      rating: { type: "number"},
+                    }
+                  }
+                }
+              },
+              success: { type: "object", nullable: true, example: null }
+            }
+          }
+        }
+      }
+    };
   */
   const { shopId } = req.params;
   // shopId 형변환
@@ -156,7 +183,7 @@ export const handleListUserReviews = async (req, res, next) => {
                       reviewData: { type: "array", items:{
                         type: "object",
                         properties: {
-                          usetId: { type: "number" },
+                          userId: { type: "number" },
                           shopId: { type: "number" },
                           content: { type: "string" },
                           rating: { type: "number" },
@@ -171,8 +198,8 @@ export const handleListUserReviews = async (req, res, next) => {
         }
       }
     };
-    #swagger.responses[400] = {
-      description: "사용자별 리뷰 목록 출력 실패 응답",
+   #swagger.responses[400] = {
+      description: "사용자별 리뷰 목록 조회 실패 응답",
       content: {
         "application/json": {
           schema: {
@@ -186,7 +213,12 @@ export const handleListUserReviews = async (req, res, next) => {
                   reason: { type: "string" },
                   data: { 
                     type: "object", 
-                    example: null,
+                    example: {
+                      userId: { type: "number" },
+                      shopId: { type: "number" },
+                      content: { type: "string" },
+                      rating: { type: "number"},
+                    }
                   }
                 }
               },
