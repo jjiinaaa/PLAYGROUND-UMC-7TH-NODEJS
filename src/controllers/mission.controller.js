@@ -7,10 +7,10 @@ import {
   userMissionListGet,
 } from "../services/mission.service.js";
 
-// date 데이터 문제 발생
 export const handleMissionAdd = async (req, res, next) => {
   /*
     #swagger.summary = '미션 등록 API';
+    #swagger.tags = ['mission-controller']
     #swagger.requestBody = {
       required: true,
       content: {
@@ -39,10 +39,11 @@ export const handleMissionAdd = async (req, res, next) => {
               success: {
                 type: "object",
                 properties: {
-                  shopId: { type: "number" },
-                  point: { type: "number" },
-                  deadline: { type: "string", format: "date" },
-                  missionText: { type: "string" },
+                  shopId: { type: "number", example: 1 },
+                  point: { type: "number", example: 1000 },
+                  deadline: { type: "string", format: "date", example: "2024-12-25" },
+                  deadlineData: { type: "string", example: "0일 9시간 39분 14초 남았습니다." },
+                  missionText: { type: "string", example: "미션 내용" },
                 }
               }
             }
@@ -62,15 +63,10 @@ export const handleMissionAdd = async (req, res, next) => {
                 type: "object",
                 properties: {
                   errorCode: { type: "string", example: "U400" },
-                  reason: { type: "string" },
+                  reason: { type: "string", example: "미션 등록 실패" },
                   data: { 
                     type: "object", 
-                    example: {
-                      shopId: { type: "number" },
-                      point: { type: "number" },
-                      deadline: { type: "string", format: "date" },
-                      missionText: { type: "string" },
-                    }
+                    example: null
                   }
                 }
               },
@@ -90,7 +86,7 @@ export const handleMissionStatusChange = async (req, res, next) => {
   /*
     #swagger.ignore = false
     #swagger.tags = ['mission-controller']
-    #swagger.summary = '미션 진행 완료 상태 변경 API';
+    #swagger.summary = '미션 진행 상태 변경 API';
     #swagger.requestBody = {
       required: true,
       content: {
@@ -106,7 +102,7 @@ export const handleMissionStatusChange = async (req, res, next) => {
       }
     };
     #swagger.responses[200] = {
-      description: "미션 진행 완료 상태 변경 응답",
+      description: "미션 진행 상태 변경 성공 응답",
       content: {
         "application/json": {
           schema: {
@@ -117,12 +113,12 @@ export const handleMissionStatusChange = async (req, res, next) => {
               success: {
                 type: "object",
                 properties: {
-                  userId: { type: "number" },
-                  missionId: { type: "number" }, 
-                  status: { type: "number" },
-                  missionText: { type: "string" },
-                  point: { type: "number" },
-                  deadline: { type: "string"},
+                  userId: { type: "number", example: 1 },
+                  missionId: { type: "number", example: 1 }, 
+                  status: { type: "number", example: 1 },
+                  missionText: { type: "string", example: "미션 내용" },
+                  point: { type: "number", example: 1000 },
+                  deadline: { type: "string", example: "37일 9시간 39분 14초 남았습니다." },
                 }
               }
             }
@@ -131,7 +127,7 @@ export const handleMissionStatusChange = async (req, res, next) => {
       }
     };
     #swagger.responses[400] = {
-      description: "미션 진행 완료 상태 변경 실패 응답",
+      description: "미션 진행 상태 변경 실패 응답",
       content: {
         "application/json": {
           schema: {
@@ -142,12 +138,12 @@ export const handleMissionStatusChange = async (req, res, next) => {
                 type: "object",
                 properties: {
                   errorCode: { type: "string", example: "U400" },
-                  reason: { type: "string" },
+                  reason: { type: "string", example: "이미 참여한 미션입니다." },
                   data: { 
                     type: "object", 
                     example: {
-                      userId: { type: "number" },
-                      missionId: { type: "number" }, 
+                      userId: 1,
+                      missionId: 1, 
                     }
                   }
                 }
@@ -185,9 +181,9 @@ export const handleListShopMissions = async (req, res, next) => {
                   missionData: {type: "array", items: {
                     type: "object",
                     properties: {
-                      shopId: { type: "number" },
-                      point: { type: "number" },
-                      deadline: { type: "string", format: "date" },
+                      shopId: { type: "number", example: 1 },
+                      point: { type: "number", example: 1000 },
+                      deadline: { type: "string", format: "date", example: "2024-12-25T00:00:00.000Z" },
                       missionText: { type: "string" },
                     }
                   }
@@ -211,7 +207,7 @@ export const handleListShopMissions = async (req, res, next) => {
                 type: "object",
                 properties: {
                   errorCode: { type: "string", example: "U400" },
-                  reason: { type: "string" },
+                  reason: { type: "string", example: "가게별 미션 목록 출력 실패" },
                   data: { 
                     type: "object", 
                     example: null,
@@ -255,9 +251,9 @@ export const handleListUserMissions = async (req, res, next) => {
                   missionData: {type: "array", items: {
                     type: "object",
                     properties: {
-                      userId: { type: "number" },
-                      missionId: { type: "number" },
-                      status: { type: "number" },
+                      userId: { type: "number", example: 1 },
+                      missionId: { type: "number", example: 1 },
+                      status: { type: "number", example: 1 },
                     }
                   }
                 }
@@ -280,7 +276,7 @@ export const handleListUserMissions = async (req, res, next) => {
                 type: "object",
                 properties: {
                   errorCode: { type: "string", example: "U400" },
-                  reason: { type: "string" },
+                  reason: { type: "string", example: "사용자별 미션 목록 출력 실패" },
                   data: { 
                     type: "object", 
                     example: null,

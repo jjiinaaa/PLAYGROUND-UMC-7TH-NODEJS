@@ -39,10 +39,10 @@ export const handleReviewAdd = async (req, res, next) => {
               success: {
                 type: "object",
                 properties: {
-                  userId: { type: "number" },
-                  shopId: { type: "number" },
-                  content: { type: "string" },
-                  rating: { type: "number"},
+                  userId: { type: "number", example: 1 },
+                  shopId: { type: "number", example: 1 },
+                  content: { type: "string", example: "저는 청경채의 익힘을 좋아하거덩요." },
+                  rating: { type: "number", example: 2.5 },
                 }
               }
             }
@@ -62,14 +62,14 @@ export const handleReviewAdd = async (req, res, next) => {
                 type: "object",
                 properties: {
                   errorCode: { type: "string", example: "U400" },
-                  reason: { type: "string" },
+                  reason: { type: "string", example: "잘못된 요청" },
                   data: { 
                     type: "object", 
                     example: {
-                      userId: { type: "number" },
-                      shopId: { type: "number" },
-                      content: { type: "string" },
-                      rating: { type: "number"},
+                      userId: 1,
+                      shopId: 1,
+                      content: "저는 청경채의 익힘을 좋아하거덩요.",
+                      rating: 2.5,
                     }
                   }
                 }
@@ -106,15 +106,17 @@ export const handleListShopReviews = async (req, res, next) => {
                 properties: {
                   resultType: { type: "string", example: "SUCCESS" },
                   error: { type: "object", nullable: true, example: null },
-                  success: {
+                  reviewData: { 
+                  type: "array", 
+                  items: { 
                     type: "object",
                     properties: {
-                      reviewId: { type: "integer" },
-                      content: { type: "string" },
-                      rating: { type: "number" },
-                      createdAt: { type: "string", format: "date-time" }
+                      userId: { type: "number", example: 1 },
+                      shopId: { type: "number", example: 1 },
+                      content: { type: "string", example: "저는 청경채의 익힘을 좋아하거덩요." },
+                      rating: { type: "number", example: 2.5}
                     }
-                  }
+                  }}
                 }
               }
             }
@@ -123,7 +125,7 @@ export const handleListShopReviews = async (req, res, next) => {
       }
     }
      #swagger.responses[400] = {
-      description: "리뷰 등록 실패 응답",
+      description: "가게별 리뷰 목록 조회 실패 응답",
       content: {
         "application/json": {
           schema: {
@@ -134,15 +136,18 @@ export const handleListShopReviews = async (req, res, next) => {
                 type: "object",
                 properties: {
                   errorCode: { type: "string", example: "U400" },
-                  reason: { type: "string" },
-                  data: { 
-                    type: "object", 
-                    example: {
-                      userId: { type: "number" },
-                      shopId: { type: "number" },
-                      content: { type: "string" },
-                      rating: { type: "number"},
-                    }
+                  reason: { type: "string", example: "잘못된 요청" },
+                  reviewData: { 
+                    type: "array",
+                    items: {
+                      type: "object",
+                      example: {
+                        userId: 1,
+                        shopId: 2,
+                        content: "Invalid review content",
+                        rating: 4.5
+                      }
+                    } 
                   }
                 }
               },
@@ -165,30 +170,31 @@ export const handleListShopReviews = async (req, res, next) => {
 // 사용자 있는지 없는지 검사 후 리뷰 목록 조회 필요
 export const handleListUserReviews = async (req, res, next) => {
   /*
-    #swagger.ignore = false
-    #swagger.tags = ['review-controller']
-    #swagger.summary = '사용자별 리뷰 목록 조회 API';
-    #swagger.description = '사용자별 리뷰 목록 조회 API입니다.'
-    #swagger.responses[200] = {
-      description: "사용자별 리뷰 목록 조회 성공 응답",
-      content: {
-        "application/json": {
-          schema: {
-            type: "object",
-            properties: {
-              resultType: { type: "string", example: "SUCCESS" },
-              error: { type: "object", nullable: true, example: null },
-              success: {
+  #swagger.ignore = false
+  #swagger.tags = ['review-controller']
+  #swagger.summary = '사용자별 리뷰 목록 조회 API'
+  #swagger.description = '사용자별 리뷰 목록 조회 API입니다.'
+  #swagger.responses[200] = {
+    description: "사용자별 리뷰 목록 조회 성공 응답",
+    content: {
+      "application/json": {
+        schema: {
+          type: "object",
+          properties: {
+            resultType: { type: "string", example: "SUCCESS" },
+            error: { type: "object", nullable: true, example: null },
+            success: {
+              type: "object",
+              properties: {
+                reviewData: {
+                  type: "array",
+                  items: {
+                    type: "object",
                     properties: {
-                      reviewData: { type: "array", items:{
-                        type: "object",
-                        properties: {
-                          userId: { type: "number" },
-                          shopId: { type: "number" },
-                          content: { type: "string" },
-                          rating: { type: "number" },
-                        }
-                      }}
+                      userId: { type: "number", example: 1 },
+                      shopId: { type: "number", example: 1 },
+                      content: { type: "string" },
+                      rating: { type: "number", example: 2.5 }
                     }
                   }
                 }
@@ -197,38 +203,44 @@ export const handleListUserReviews = async (req, res, next) => {
           }
         }
       }
-    };
-   #swagger.responses[400] = {
-      description: "사용자별 리뷰 목록 조회 실패 응답",
-      content: {
-        "application/json": {
-          schema: {
-            type: "object",
-            properties: {
-              resultType: { type: "string", example: "FAIL" },
-              error: {
-                type: "object",
-                properties: {
-                  errorCode: { type: "string", example: "U400" },
-                  reason: { type: "string" },
-                  data: { 
-                    type: "object", 
+    }
+  }
+  #swagger.responses[400] = {
+    description: "사용자별 리뷰 목록 조회 실패 응답",
+    content: {
+      "application/json": {
+        schema: {
+          type: "object",
+          properties: {
+            resultType: { type: "string", example: "FAIL" },
+            error: {
+              type: "object",
+              properties: {
+                errorCode: { type: "string", example: "U400" },
+                reason: { type: "string", example: "잘못된 요청" },
+                reviewData: {
+                  type: "array",
+                  items: {
+                    type: "object",
                     example: {
-                      userId: { type: "number" },
-                      shopId: { type: "number" },
-                      content: { type: "string" },
-                      rating: { type: "number"},
-                    }
+                      userId: 1,
+                      shopId: 2,
+                      content: "String",
+                      rating: 4.5
                   }
+                  }
+                 
                 }
-              },
-              success: { type: "object", nullable: true, example: null }
-            }
+              }
+            },
+            success: { type: "object", nullable: true, example: null }
           }
         }
       }
-    };
-  */
+    }
+  }
+*/
+
   const { userId } = req.params;
   const reviews = await userReviewListGet(
     parseInt(userId),
