@@ -37,10 +37,10 @@ export const handleShopAdd = async (req, res, next) => {
               success: {
                 type: "object",
                 properties: {
-                  areaId: { type: "number" },
-                  name: { type: "string" },
-                  address: { type: "string" },
-                  rating: { type: "number" }
+                  areaId: { type: "number", example: 1 },
+                  name: { type: "string", example: "진하네 팥죽" },
+                  address: { type: "string", example: "서울특별시 강남구 역삼동 123-456" },
+                  rating: { type: "number", example: 4.5}
                 }
               }
             }
@@ -49,7 +49,7 @@ export const handleShopAdd = async (req, res, next) => {
       }
     };
     #swagger.responses[400] = {
-      description: "상점 등록 실패 응답",
+      description: "가게 등록 실패 응답",
       content: {
         "application/json": {
           schema: {
@@ -60,12 +60,12 @@ export const handleShopAdd = async (req, res, next) => {
                 type: "object",
                 properties: {
                   errorCode: { type: "string", example: "U400" },
-                  reason: { type: "string" },
+                  reason: { type: "string", example: "잘못된 요청" },
                   data: { type: "object", example: {
-                    areaId: { type: "number" },
-                    name: { type: "string" },
-                    address: { type: "string" },
-                    rating: { type: "number" }
+                    areaId: 1,
+                    name: "진하네 팥죽",
+                    address: "서울특별시 강남구 역삼동 123-456",
+                    rating: 4.5
                   }}
                 }
               },

@@ -37,7 +37,7 @@ app.use(
 );
 
 app.get("/openapi.json", async (req, res, next) => {
-  // #swagger.ignore = true : 해당 API는 문서화하지 않음
+  // #swagger.ignore = true;
   const options = {
     openapi: "3.0.0",
     disableLogs: true,
@@ -88,10 +88,6 @@ app.use(
     allowedHeaders: ["x-auth-token"],
   })
 );
-
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
 
 app.post("/api/v1/users/signup", handleUserSignup);
 app.post("/api/v1/shop/addshop", handleShopAdd);
