@@ -19,13 +19,14 @@ import {
 import { PrismaSessionStore } from "@quixo3/prisma-session-store";
 import session from "express-session";
 import passport from "passport";
-import { googleStrategy } from "./auth.config.js";
+import { googleStrategy, naverStrategy } from "./auth.config.js";
 import { prisma } from "./db.config.js";
 
 dotenv.config();
 // .env 파일에 환경 변수를 읽어서 process.env 객체에 추가하여 접근 가능
 
 passport.use(googleStrategy);
+passport.use(naverStrategy);
 passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser((user, done) => done(null, user));
 
@@ -63,6 +64,20 @@ app.use(
       },
     }
   )
+);
+
+app.get(
+  "/oauth2/login/naver",
+  passport.authenticate("naver", { authType: "reprompt" })
+);
+
+app.get(
+  "/oauth2/callback/naver",
+  passport.authenticate("naver", {
+    failureRedirect: "/oauth2/login/naver",
+    failureMessage: true,
+  }),
+  (req, res) => res.redirect("/")
 );
 
 app.get("/oauth2/login/google", passport.authenticate("google"));
