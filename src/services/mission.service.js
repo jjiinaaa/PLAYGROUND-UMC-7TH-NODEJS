@@ -17,7 +17,6 @@ import {
 
 export const missionAdd = async (mission) => {
   const { shopId, point, deadline, missionText } = mission;
-  console.log(mission);
   const joinMissionId = await addMission({
     shopId,
     point,
@@ -30,7 +29,6 @@ export const missionAdd = async (mission) => {
       mission
     );
   }
-  console.log(joinMissionId);
   const missionDeadline = await getmissionDeadline(deadline);
 
   if (missionDeadline === null) {
