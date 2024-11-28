@@ -48,16 +48,16 @@ export const handleUserSignup = async (req, res, next) => {
               success: {
                 type: "object",
                 properties: {
-                  password: { type: "string" },
-                  email: { type: "string" },
-                  name: { type: "string" },
-                  gender: { type: "string" },
-                  birth: { type: "string", format: "date" },
-                  address: { type: "string" },
-                  detailAddress: { type: "string" },
-                  phoneNumber: { type: "string" },
-                  point: { type: "number" },
-                  preferences: { type: "array", items: { type: "number" } }
+                  password: { type: "string", example: "qwe123" },
+                  email: { type: "string", example: "example@example.com" },
+                  name: { type: "string", example: "홍길동" },
+                  gender: { type: "string", example: "남성" },
+                  birth: { type: "string", format: "date", example: "1990-01-01" },
+                  address: { type: "string", example: "서울특별시 강남구" },
+                  detailAddress: { type: "string", example: "역삼동" },
+                  phoneNumber: { type: "string", example: "01012345678" },
+                  point: { type: "number", example: 0 },
+                  preferences: { type: "array", items: { type: "number", example: 0 } }
                 }
               }
             }
@@ -77,8 +77,21 @@ export const handleUserSignup = async (req, res, next) => {
                 type: "object",
                 properties: {
                   errorCode: { type: "string", example: "U001" },
-                  reason: { type: "string" },
-                  data: { type: "object", example: null }
+                  reason: { type: "string", example: "이미 가입된 이메일입니다." },
+                  data: { 
+                    type: "object", 
+                    example: {
+                      password: "qwe123",
+                      email: "example@example.com",
+                      name: "홍길동",
+                      gender: "남성",
+                      birth: "1990-01-01",
+                      address: "서울특별시 강남구",
+                      detailAddress: "역삼동",
+                      phoneNumber: "01012345678",
+                      point: 0,
+                      preferences: [1]
+                  } }
                 }
               },
               success: { type: "object", nullable: true, example: null }
