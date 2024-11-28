@@ -5,31 +5,29 @@ import { prisma } from "./db.config.js";
 dotenv.config(); // Load .env file
 
 const googleVerify = async (profile) => {
-  console.log("profile", profile);
   const email = profile.emails?.[0]?.value;
+  console.log("profile", email);
   if (!email) {
     throw new Error(`profile.email was not found: ${profile}`);
   }
 
-  const user = await prisma.user.findFirst({ where: { email } });
+  const user = await prisma.user.findFirst({ where: { email: email } });
   if (user !== null) {
     return { id: user.id, email: user.email, name: user.name };
   }
-
   const created = await prisma.user.create({
     data: {
       password: "googleOAuth2", // Google OAuth2 로그인은 비밀번호가 없으므로 임시로 설정
       email,
       name: profile.displayName,
       gender: "추후 수정",
-      birth: new Date(1970, 0, 1),
+      birth: toString(new Date(1970, 0, 1)),
       address: "추후 수정",
       detailAddress: "추후 수정",
       phoneNumber: "추후 수정",
       point: 0,
     },
   });
-
   return { id: created.id, email: created.email, name: created.name };
 };
 

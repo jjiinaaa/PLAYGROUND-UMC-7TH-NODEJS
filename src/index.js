@@ -33,6 +33,26 @@ const app = express();
 const port = process.env.PORT;
 
 app.use(
+  session({
+    cookie: {
+      maxAge: 7 * 24 * 60 * 60 * 1000, // ms
+    },
+    resave: false,
+    saveUninitialized: false,
+    secret: process.env.EXPRESS_SESSION_SECRET,
+    store: new PrismaSessionStore(prisma, {
+      checkPeriod: 2 * 60 * 1000, // ms
+      dbRecordIdIsSessionId: true,
+      dbRecordIdFunction: undefined,
+    }),
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+// HTTP Cookie 중 sid를 사용하여 mySQL에 저장된 세션 정보를 가져와 req.user에 저장
+
+app.use(
   "/docs",
   swaggerUiExpress.serve,
   swaggerUiExpress.setup(
@@ -46,6 +66,7 @@ app.use(
 );
 
 app.get("/oauth2/login/google", passport.authenticate("google"));
+
 app.get(
   "/oauth2/callback/google",
   passport.authenticate("google", {
@@ -100,26 +121,6 @@ app.use(cors()); // cors 미들웨어 추가
 app.use(express.static("public")); // 정적 파일 제공
 app.use(express.json()); // json 파싱 미들웨어 추가
 app.use(express.urlencoded({ extended: false })); // urlencoded 파싱 미들웨어 추가
-
-app.use(
-  session({
-    cookie: {
-      maxAge: 7 * 24 * 60 * 60 * 1000, // ms
-    },
-    resave: false,
-    saveUninitialized: false,
-    secret: process.env.EXPRESS_SESSION_SECRET,
-    store: new PrismaSessionStore(prisma, {
-      checkPeriod: 2 * 60 * 1000, // ms
-      dbRecordIdIsSessionId: true,
-      dbRecordIdFunction: undefined,
-    }),
-  })
-);
-
-app.use(passport.initialize());
-app.use(passport.session());
-// HTTP Cookie 중 sid를 사용하여 mySQL에 저장된 세션 정보를 가져와 req.user에 저장
 
 app.get("/", (req, res) => {
   // #swagger.ignore = false;

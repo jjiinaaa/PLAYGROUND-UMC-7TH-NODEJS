@@ -120,7 +120,7 @@ model Session {
   id      String    @id
   sid     String    @unique // session id
   data    String    @db.VarChar(512) // 자유롭게 사용자 정보 저장
-  expires DateTime  @map("expires_at") // 만료 시간 (보통 약 1주일)
+  expiresAt DateTime  @map("expires_at") // 만료 시간 (보통 약 1주일)
 
   @@map("session")
 }
