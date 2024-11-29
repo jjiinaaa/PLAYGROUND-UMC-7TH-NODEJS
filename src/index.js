@@ -3,7 +3,10 @@ import cors from "cors";
 import express from "express";
 import swaggerAutogen from "swagger-autogen";
 import swaggerUiExpress from "swagger-ui-express";
-import { handleUserSignup } from "./controllers/user.controller.js";
+import {
+  handleUserSignup,
+  handleUserChangeInfo,
+} from "./controllers/user.controller.js";
 import { handleShopAdd } from "./controllers/shop.controller.js";
 import {
   handleReviewAdd,
@@ -156,6 +159,7 @@ app.post("/api/v1/review/addreview", handleReviewAdd);
 app.post("/api/v1/mission/addmission", handleMissionAdd);
 app.post("/api/v1/mission/status", handleMissionStatusChange);
 
+app.post("/api/v1/users/:userId/changeinfo", handleUserChangeInfo);
 app.get("/api/v1/users/:userId/reviews", handleListUserReviews);
 app.get("/api/v1/users/:userId/missions", handleListUserMissions);
 app.get("/api/v1/shops/:shopId/reviews", handleListShopReviews);
