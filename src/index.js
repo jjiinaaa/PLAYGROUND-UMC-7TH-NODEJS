@@ -80,7 +80,7 @@ app.get(
     failureRedirect: "/oauth2/login/naver",
     failureMessage: true,
   }),
-  (req, res) => res.redirect("/")
+  (req, res) => res.redirect("/docs")
 );
 
 app.get("/oauth2/login/google", passport.authenticate("google"));
@@ -91,7 +91,7 @@ app.get(
     failureRedirect: "/oauth2/login/google",
     failureMessage: true,
   }),
-  (req, res) => res.redirect("/")
+  (req, res) => res.redirect("/docs")
 );
 
 app.get("/openapi.json", async (req, res, next) => {

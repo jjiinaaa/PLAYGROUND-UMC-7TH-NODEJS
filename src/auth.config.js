@@ -41,6 +41,7 @@ export const naverStrategy = new NaverStrategy( // Naver OAuth2 Strategy Class
     state: true, // CSRF Protection
   },
   (accessToken, refreshToken, profile, done) => {
+    console.log("profile", profile);
     return naverVerify(profile)
       .then((user) => done(null, user))
       .catch((err) => done(err));
