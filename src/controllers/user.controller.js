@@ -7,7 +7,7 @@
 import { StatusCodes } from "http-status-codes";
 import { bodyToUser } from "../dtos/user.dto.js";
 // DTO(Data Transfer Object) 파일에서 요청 데이터를 한 번 변환하기 위해 bodyToUser 함수를 불러옴
-import { userSignUp } from "../services/user.service.js";
+import { userSignUp, userChangeInfo } from "../services/user.service.js";
 
 export const handleUserSignup = async (req, res, next) => {
   /*
@@ -103,5 +103,15 @@ export const handleUserSignup = async (req, res, next) => {
   */
 
   const user = await userSignUp(bodyToUser(req.body));
+  res.status(StatusCodes.OK).success(user);
+};
+
+export const handleUserChangeInfo = async (req, res, next) => {
+  console.log(req.params.userId);
+  // 숫자로 변환 :
+  const user = await userChangeInfo(
+    parseInt(req.params.userId),
+    bodyToUser(req.body)
+  );
   res.status(StatusCodes.OK).success(user);
 };

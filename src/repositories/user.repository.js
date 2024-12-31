@@ -44,3 +44,44 @@ export const getUserPreferencesByUserId = async (userId) => {
   }); // User 선호 음식 정보를 조회하는 쿼리
   return preferences;
 };
+
+export const updateUser = async (userId, data) => {
+  const emailCheck = await prisma.user.findFirst({
+    where: { email: data.email },
+  }); // email이 존재하는지 확인
+  if (!emailCheck) {
+    return null; // User 데이터가 존재하지 않을 경우 null 반환
+  }
+
+  const { password, name, gender, birth, address, detailAddress, phoneNumber } =
+    data;
+  console.log("userId", userId, "data", data);
+  const user = await prisma.user.update({
+    where: { id: userId },
+    data: {
+      password,
+      name,
+      gender,
+      birth,
+      address,
+      detailAddress,
+      phoneNumber,
+    },
+  }); // userId에 해당하는 User 정보를 수정하는 쿼리
+  return user.id;
+};
+
+// User 선호 음식 정보를 저장하는 함수
+export const updatePreference = async (userId, preferFoodId) => {
+  console.log("userId", userId, "preferFoodId", preferFoodId);
+  await prisma.userPreferFood
+    .update({
+      where: { userId: userId },
+      data: {
+        preferFoodId,
+      },
+    })
+    .catch((error) => {
+      console.log("error", error);
+    }); // User 선호 음식 정보를 저장하는 쿼리
+};

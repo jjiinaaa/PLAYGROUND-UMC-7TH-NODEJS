@@ -1,10 +1,16 @@
 import { responseFromUser } from "../dtos/user.dto.js";
-import { DuplicateUserEmailError } from "../errors.js";
+import {
+  DuplicateUserEmailError,
+  NotFoundPreferencesError,
+  NotFoundUserError,
+} from "../errors.js";
 import {
   addUser,
   getUser,
   getUserPreferencesByUserId,
   setPreference,
+  updateUser,
+  updatePreference,
 } from "../repositories/user.repository.js";
 
 // mission
@@ -50,13 +56,68 @@ export const userSignUp = async (data) => {
   const user = await getUser(joinUserId); // getUser 함수를 통해 가입된 User 정보를 조회
 
   if (user === null) {
-    throw new DuplicateUserEmailError("사용자 정보를 찾을 수 없습니다.", user);
+    throw new NotFoundUserError("사용자 정보를 찾을 수 없습니다.", user);
   }
 
   const preferencesData = await getUserPreferencesByUserId(joinUserId); // getUserPreferencesByUserId 함수를 통해 가입된 User의 선호 음식 정보를 조회
 
   if (preferencesData === null) {
-    throw new DuplicateUserEmailError(
+    throw new NotFoundPreferencesError(
+      "선호 음식을 찾을 수 없습니다.",
+      preferencesData
+    );
+  }
+
+  return responseFromUser({ user, preferences: preferencesData });
+};
+
+export const userChangeInfo = async (userId, data) => {
+  const {
+    password,
+    name,
+    gender,
+    birth,
+    address,
+    detailAddress,
+    phoneNumber,
+    preferences,
+  } = data;
+
+  const updateUserId = await updateUser(userId, {
+    password,
+    name,
+    gender,
+    birth,
+    address,
+    detailAddress,
+    phoneNumber,
+  });
+
+  if (updateUserId === null) {
+    throw new DuplicateUserEmailError("존재하지 않는 사용자입니다.", data);
+  }
+
+  for (const preference of preferences) {
+    // const preference of data.preferences로 data.preferences에 있는 선호 음식 정보를 하나씩 가져와 setPreference 함수를 실행
+    await updatePreference(updateUserId, preference); // setPreference 함수를 통해 선호 음식 정보를 DB에 저장
+  }
+  ``;
+
+  const user = await getUser(updateUserId); // getUser 함수를 통해 가입된 User 정보를 조회
+
+  if (user === null) {
+    throw new NotFoundUserError(
+      "업데이트 된 사용자 정보를 찾을 수 없습니다.",
+      user
+    );
+  }
+
+  const preferencesData = await getUserPreferencesByUserId(updateUserId); // getUserPreferencesByUserId 함수를 통해 가입된 User의 선호 음식 정보를 조회
+
+  console.log("preferencesData", preferencesData);
+
+  if (preferencesData === null) {
+    throw new NotFoundPreferencesError(
       "선호 음식을 찾을 수 없습니다.",
       preferencesData
     );
