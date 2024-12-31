@@ -73,10 +73,12 @@ export const updateUser = async (userId, data) => {
 
 // User 선호 음식 정보를 저장하는 함수
 export const updatePreference = async (userId, preferFoodId) => {
+  // select 하고 있으면 업데이트해. 있는거면 하지말고 없으면 만들어.
+  // state 값으로 0, 1로 해서 1은 활성화. 0은 비활성화. 0으로 바꾼지 어느정도 시간 지나면 자동 삭제.
   console.log("userId", userId, "preferFoodId", preferFoodId);
   await prisma.userPreferFood
     .update({
-      where: { userId: userId },
+      where: { userId },
       data: {
         preferFoodId,
       },
