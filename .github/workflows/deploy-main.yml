@@ -47,11 +47,14 @@ jobs:
             echo "[Unit]
             Description=UMC 7th Project
             After=network.target
+            StartLimitIntervalSec=60
+            StartLimitBurst=5
 
             [Service]
             User=${USER}
             ExecStart=/usr/bin/npm run dev --prefix /opt/app/
             Restart=always
+            RestartSec=10
 
             [Install]
             WantedBy=multi-user.target" | sudo tee /etc/systemd/system/app.service
