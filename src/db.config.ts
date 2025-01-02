@@ -1,18 +1,17 @@
 import mysql from "mysql2/promise";
 import dotenv from "dotenv";
 import { PrismaClient } from "@prisma/client";
-import { Pool } from "mysql2";
 
 dotenv.config();
 
 export const prisma: PrismaClient = new PrismaClient({ log: ["query"] });
 
 export const pool: any = mysql.createPool({
-  host: process.env.DB_HOST || "localhost", // mysql의 hostname
-  user: process.env.DB_USER || "root", // user 이름
-  port: process.env.DB_PORT || 3306, // 포트 번호
-  database: process.env.DB_NAME || "umc7th_week5_mission", // 데이터베이스 이름
-  password: process.env.DB_PASSWORD || "0000", // 비밀번호
+  host: process.env.DB_HOST, // mysql의 hostname
+  user: process.env.DB_USER, // user 이름
+  port: Number(process.env.DB_PORT), // 포트 번호
+  database: process.env.DB_NAME, // 데이터베이스 이름
+  password: process.env.DB_PASSWORD, // 비밀번호
   waitForConnections: true,
   // Pool에 획득할 수 있는 connection이 없을 때,
   // true면 요청을 queue에 넣고 connection을 사용할 수 있게 되면 요청을 실행하며, false이면 즉시 오류를 내보내고 다시 요청
