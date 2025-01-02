@@ -1,12 +1,13 @@
 import mysql from "mysql2/promise";
 import dotenv from "dotenv";
 import { PrismaClient } from "@prisma/client";
+import { Pool } from "mysql2";
 
 dotenv.config();
 
 export const prisma: PrismaClient = new PrismaClient({ log: ["query"] });
 
-export const pool = mysql.createPool({
+export const pool: any = mysql.createPool({
   host: process.env.DB_HOST || "localhost", // mysql의 hostname
   user: process.env.DB_USER || "root", // user 이름
   port: process.env.DB_PORT || 3306, // 포트 번호
