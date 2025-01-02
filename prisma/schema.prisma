@@ -94,8 +94,8 @@ model mission {
   shop        shop       @relation(fields: [shopId], references: [id])
   shopId      Int        @db.Int
   point       Int        @db.Int @default(0)
-  deadline    DateTime?  @db.DateTime()
-  missionText String?    @db.Text
+  deadline    DateTime  @db.DateTime()
+  missionText String    @db.Text
   createdAt   DateTime?  @db.DateTime(6) @default(now())
   updatedAt   DateTime?  @db.DateTime(6) @updatedAt
 

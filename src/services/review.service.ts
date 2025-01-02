@@ -1,3 +1,4 @@
+import { reviewDto, review } from "../entities/review.entity.js";
 import {
   responseFormReview,
   responsePreviewReview,
@@ -10,9 +11,9 @@ import {
   getUserReviews,
 } from "../repositories/review.repository.js";
 
-export const reviewAdd = async (review) => {
+export const reviewAdd = async (review: reviewDto): Promise<reviewDto> => {
   const { shopId, userId, content, rating } = review;
-  const joinReviewId = await addReview({
+  const joinReviewId: number | null = await addReview({
     shopId,
     userId,
     content,
@@ -21,16 +22,22 @@ export const reviewAdd = async (review) => {
   if (joinReviewId === null) {
     throw new DuplicateUserEmailError("해당 상점이 존재하지 않습니다.", review);
   }
-  const reviewData = await getReview(joinReviewId);
+  const reviewData: review = await getReview(joinReviewId);
   return responseFormReview(reviewData);
 };
 
-export const shopReviewListGet = async (shopId, cursor) => {
+export const shopReviewListGet = async (
+  shopId: number,
+  cursor: number
+): Promise<any> => {
   const reviews = await getShopReviews(shopId, cursor);
   return responsePreviewReview(reviews);
 };
 
-export const userReviewListGet = async (userId, cursor) => {
+export const userReviewListGet = async (
+  userId: number,
+  cursor: number
+): Promise<any> => {
   const reviews = await getUserReviews(userId, cursor);
   return responsePreviewReview(reviews);
 };

@@ -1,4 +1,5 @@
 import StatusCodes from "http-status-codes";
+import { Request, Response, NextFunction } from "express";
 import { bodyToReview } from "../dtos/review.dto.js";
 import {
   reviewAdd,
@@ -6,7 +7,11 @@ import {
   userReviewListGet,
 } from "../services/review.service.js";
 
-export const handleReviewAdd = async (req, res, next) => {
+export const handleReviewAdd = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   /*
     #swagger.ignore = false
     #swagger.tags = ['review-controller']
@@ -86,7 +91,11 @@ export const handleReviewAdd = async (req, res, next) => {
   // next - 미들웨어에 쓰이는 함수에 넣어주는 값 / 미들웨어 : 요청과 응답 사이에 실행되는 함수
 };
 
-export const handleListShopReviews = async (req, res, next) => {
+export const handleListShopReviews = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   /*
     #swagger.ignore = false;
     #swagger.tags = ['review-controller'];
@@ -159,7 +168,6 @@ export const handleListShopReviews = async (req, res, next) => {
     };
   */
   const { shopId } = req.params;
-  // shopId 형변환
   const reviews = await shopReviewListGet(
     parseInt(shopId),
     typeof req.query.cursor === "string" ? parseInt(req.query.cursor) : 0
@@ -168,7 +176,11 @@ export const handleListShopReviews = async (req, res, next) => {
 };
 
 // 사용자 있는지 없는지 검사 후 리뷰 목록 조회 필요
-export const handleListUserReviews = async (req, res, next) => {
+export const handleListUserReviews = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   /*
   #swagger.ignore = false
   #swagger.tags = ['review-controller']

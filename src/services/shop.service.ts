@@ -1,11 +1,11 @@
+import { shopDto, shop } from "../entities/shop.entity.js";
 import { responseFormShop } from "../dtos/shop.dto.js";
 import { DuplicateUserEmailError } from "../errors.js";
 import { addShop, getShop } from "../repositories/shop.repository.js";
 
-export const shopAdd = async (data) => {
+export const shopAdd = async (data: shopDto): Promise<shopDto> => {
   const { areaId, name, address, rating } = data;
-  console.log("shopAdd 함수 실행 : ", data);
-  const joinShopId = await addShop({
+  const joinShopId: number | null = await addShop({
     areaId,
     name,
     address,
@@ -14,6 +14,6 @@ export const shopAdd = async (data) => {
   if (joinShopId === null) {
     throw new DuplicateUserEmailError("이미 존재하는 가게입니다.", { data });
   }
-  const shop = await getShop(joinShopId);
+  const shop: shop = await getShop(joinShopId);
   return responseFormShop(shop);
 };

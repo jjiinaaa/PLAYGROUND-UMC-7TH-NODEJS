@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import cors from "cors";
-import express from "express";
+import express, { Request, Response, Express, NextFunction } from "express";
 import swaggerAutogen from "swagger-autogen";
 import swaggerUiExpress from "swagger-ui-express";
 import {
@@ -31,7 +31,9 @@ dotenv.config();
 passport.use(googleStrategy);
 passport.use(naverStrategy);
 passport.serializeUser((user, done) => done(null, user));
-passport.deserializeUser((user, done) => done(null, user));
+passport.deserializeUser<{ id: string; email: string; name: string }>(
+  (user, done) => done(null, user)
+);
 
 const app = express();
 const port = process.env.PORT;
@@ -71,7 +73,9 @@ app.use(
 
 app.get(
   "/oauth2/login/naver",
-  passport.authenticate("naver", { authType: "reprompt" })
+  passport.authenticate("naver", {
+    authType: "reprompt",
+  } as any)
 );
 
 app.get(
@@ -102,7 +106,7 @@ app.get("/openapi.json", async (req, res, next) => {
     writeOutputFile: false,
   }; // swagger 옵션
   const outputFile = "/dev/null"; // swagger 파일 출력 금지
-  const routes = ["./src/index.js"]; // swagger 문서화할 파일 경로
+  const routes = ["./src/index.ts"]; // swagger 문서화할 파일 경로
   const doc = {
     info: {
       title: "UMC 7th Study",
@@ -166,7 +170,7 @@ app.get("/api/v1/shops/:shopId/reviews", handleListShopReviews);
 app.get("/api/v1/shops/:shopId/missions", handleListShopMissions);
 
 // 전역 에러 처리 미들웨어
-app.use((err, req, res, next) => {
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   if (res.headersSent) {
     return next(err);
   }

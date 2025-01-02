@@ -1,10 +1,15 @@
 import StatusCodes from "http-status-codes";
+import { Request, Response, NextFunction } from "express";
 import { DuplicateUserEmailError } from "../errors.js";
 import { bodyToShop } from "../dtos/shop.dto.js";
 import { shopAdd } from "../services/shop.service.js";
 
 // 지역 없으면 에러 메세지 출력 필요. 현재는 unknown으로 에러 메세지 출력
-export const handleShopAdd = async (req, res, next) => {
+export const handleShopAdd = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   /*
     #swagger.ignore = false
     #swagger.tags = ['shop-controller']

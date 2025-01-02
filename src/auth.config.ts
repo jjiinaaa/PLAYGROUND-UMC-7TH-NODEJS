@@ -5,7 +5,7 @@ import { prisma } from "./db.config.js";
 
 dotenv.config(); // Load .env file
 
-const naverVerify = async (profile) => {
+const naverVerify = async (profile: any) => {
   const email = profile.email;
   if (!email) {
     throw new Error(`profile.email was not found: ${profile}`);
@@ -20,8 +20,8 @@ const naverVerify = async (profile) => {
       password: "naverOuth2", // Google OAuth2 로그인은 비밀번호가 없으므로 임시로 설정
       email,
       name: profile.name,
-      gender: (profile.gender = "M" ? "남성" : "여성"),
-      birth: toString(profile.birthYear + "-" + profile.birthday),
+      gender: profile.gender === "M" ? "남성" : "여성",
+      birth: String(profile.birthYear + "-" + profile.birthday),
       address: "추후 수정",
       detailAddress: "추후 수정",
       phoneNumber: profile.mobile,
@@ -40,7 +40,7 @@ export const naverStrategy = new NaverStrategy( // Naver OAuth2 Strategy Class
     scope: ["email", "profile"], // Scope : 로그인 후에, email and profile 조회 권한을 줌
     state: true, // CSRF Protection
   },
-  (accessToken, refreshToken, profile, done) => {
+  (accessToken: any, refreshToken: any, profile: any, done: any) => {
     console.log("profile", profile);
     return naverVerify(profile)
       .then((user) => done(null, user))
@@ -48,7 +48,7 @@ export const naverStrategy = new NaverStrategy( // Naver OAuth2 Strategy Class
   }
 );
 
-const googleVerify = async (profile) => {
+const googleVerify = async (profile: any) => {
   const email = profile.email?.[0]?.value;
   if (!email) {
     throw new Error(`profile.email was not found: ${profile}`);
@@ -64,7 +64,7 @@ const googleVerify = async (profile) => {
       email,
       name: profile.displayName,
       gender: "추후 수정",
-      birth: toString(new Date(1970, 0, 1)),
+      birth: String(new Date(1970, 0, 1)),
       address: "추후 수정",
       detailAddress: "추후 수정",
       phoneNumber: "추후 수정",
