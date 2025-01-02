@@ -39,7 +39,9 @@ jobs:
 
       - name: Install dependencies
         run: |
-          ssh playground-umc-7th 'npm install --prefix /opt/app/'
+          ssh playground-umc-7th 'cd /opt/app; npm install'
+          ssh playground-umc-7th 'cd /opt/app; npm exec prisma generate'
+          ssh playground-umc-7th 'cd /opt/app; npm run build'
 
       - name: Copy systemd service file
         run: |

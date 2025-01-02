@@ -3,6 +3,14 @@ import {
   responseFormUserMission,
   responsePreviewMission,
 } from "../dtos/mission.dto.js";
+import {
+  mission,
+  missionDto,
+  responseFromMissionDto,
+  userMissionDto,
+  responseFromUserMissionDto,
+  userMission,
+} from "../entities/mission.entity.js";
 import { DuplicateUserEmailError } from "../errors.js";
 import {
   addMission,
@@ -15,9 +23,11 @@ import {
   getUserMissions,
 } from "../repositories/mission.repository.js";
 
-export const missionAdd = async (mission) => {
+export const missionAdd = async (
+  mission: missionDto
+): Promise<responseFromMissionDto> => {
   const { shopId, point, deadline, missionText } = mission;
-  const joinMissionId = await addMission({
+  const joinMissionId: number | null = await addMission({
     shopId,
     point,
     deadline,
@@ -29,7 +39,7 @@ export const missionAdd = async (mission) => {
       mission
     );
   }
-  const missionDeadline = await getmissionDeadline(deadline);
+  const missionDeadline: string | null = await getmissionDeadline(deadline);
 
   if (missionDeadline === null) {
     throw new DuplicateUserEmailError(
@@ -37,7 +47,7 @@ export const missionAdd = async (mission) => {
       missionDeadline
     );
   }
-  const missionData = await getMission(joinMissionId);
+  const missionData: mission = await getMission(joinMissionId);
 
   if (joinMissionId === null) {
     throw new DuplicateUserEmailError(
@@ -48,9 +58,11 @@ export const missionAdd = async (mission) => {
   return responseFormMission(missionData, missionDeadline);
 };
 
-export const missionStatusChange = async (userMission) => {
+export const missionStatusChange = async (
+  userMission: userMissionDto
+): Promise<responseFromUserMissionDto> => {
   const { userId, missionId } = userMission;
-  const joinUserMissionId = await addUserMission({
+  const joinUserMissionId: number | null = await addUserMission({
     userId,
     missionId,
   });
@@ -59,11 +71,13 @@ export const missionStatusChange = async (userMission) => {
     throw new DuplicateUserEmailError("이미 참여한 미션입니다.", userMission);
   }
 
-  const userMissionData = await getUserMission(joinUserMissionId);
+  const userMissionData: userMission = await getUserMission(joinUserMissionId);
 
-  const missionData = await getMission(missionId);
+  const missionData: mission = await getMission(missionId);
 
-  const userMissionDeadline = await getUserMissionDeadline(joinUserMissionId);
+  const userMissionDeadline: string | null = await getUserMissionDeadline(
+    joinUserMissionId
+  );
 
   if (userMissionDeadline === null) {
     throw new DuplicateUserEmailError(
@@ -79,12 +93,18 @@ export const missionStatusChange = async (userMission) => {
   );
 };
 
-export const shopMissionListGet = async (shopId, cursor) => {
-  const missions = await getShopMissions(shopId, cursor);
+export const shopMissionListGet = async (
+  shopId: number,
+  cursor: number
+): Promise<any> => {
+  const missions: mission[] = await getShopMissions(shopId, cursor);
   return responsePreviewMission(missions);
 };
 
-export const userMissionListGet = async (userId, cursor) => {
-  const missions = await getUserMissions(userId, cursor);
+export const userMissionListGet = async (
+  userId: number,
+  cursor: number
+): Promise<any> => {
+  const missions: userMission[] = await getUserMissions(userId, cursor);
   return responsePreviewMission(missions);
 };

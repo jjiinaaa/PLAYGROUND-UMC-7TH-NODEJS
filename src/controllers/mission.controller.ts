@@ -1,4 +1,5 @@
 import { StatusCodes } from "http-status-codes";
+import { Request, Response, NextFunction } from "express";
 import { bodyToMission, bodyToUserMission } from "../dtos/mission.dto.js";
 import {
   missionAdd,
@@ -7,7 +8,11 @@ import {
   userMissionListGet,
 } from "../services/mission.service.js";
 
-export const handleMissionAdd = async (req, res, next) => {
+export const handleMissionAdd = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   /*
     #swagger.summary = '미션 등록 API';
     #swagger.tags = ['mission-controller']
@@ -82,7 +87,11 @@ export const handleMissionAdd = async (req, res, next) => {
   // next - 미들웨어에 쓰이는 함수에 넣어주는 값 / 미들웨어 : 요청과 응답 사이에 실행되는 함수
 };
 
-export const handleMissionStatusChange = async (req, res, next) => {
+export const handleMissionStatusChange = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   /*
     #swagger.ignore = false
     #swagger.tags = ['mission-controller']
@@ -160,7 +169,11 @@ export const handleMissionStatusChange = async (req, res, next) => {
 };
 
 // 가게 있는지에 대한 유효성 검사 필요
-export const handleListShopMissions = async (req, res, next) => {
+export const handleListShopMissions = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   /*
     #swagger.ignore = false
     #swagger.tags = ['mission-controller']
@@ -230,7 +243,11 @@ export const handleListShopMissions = async (req, res, next) => {
 };
 
 // 사용자 있는지에 대한 유효성 검사 필요
-export const handleListUserMissions = async (req, res, next) => {
+export const handleListUserMissions = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   /*
     #swagger.ignore = false
     #swagger.tags = ['mission-controller']

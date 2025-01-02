@@ -115,6 +115,7 @@
     "to-regex-range": "^5.0.1",
     "toidentifier": "^1.0.1",
     "touch": "^3.1.1",
+    "ts-node": "^10.9.2",
     "type-is": "^2.0.0",
     "undefsafe": "^2.0.5",
     "unpipe": "^1.0.0",
@@ -123,9 +124,10 @@
     "wrappy": "^1.0.2"
   },
   "scripts": {
+    "build": "tsx scripts/build.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/index.js",
-    "dev": "nodemon -e js,json,prisma --exec \"prisma generate && node src/index.js\""
+    "start": "node dist/index.cjs",
+    "dev": "nodemon -e js,json,prisma,ts --exec \"prisma generate && tsx src/index.ts\""
   },
   "author": "",
   "license": "ISC",

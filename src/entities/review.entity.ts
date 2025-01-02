@@ -1,7 +1,7 @@
 export interface reviewDto {
   userId: number;
   shopId: number;
-  content: string;
+  content: string | null;
   rating: number;
 }
 
