@@ -1,4 +1,6 @@
-export const bodyToShop = (body) => {
+import { shop, shopDto } from "../entities/shop.entity.js";
+
+export const bodyToShop = (body: shop): shopDto => {
   const { areaId, name, address, rating } = body;
   return {
     areaId,
@@ -8,7 +10,7 @@ export const bodyToShop = (body) => {
   };
 };
 
-export const responseFormShop = (shop) => {
+export const responseFormShop = (shop: shop): shopDto => {
   const { areaId, name, address, rating } = shop;
   return {
     areaId,

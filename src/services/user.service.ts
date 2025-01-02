@@ -1,4 +1,5 @@
 import { responseFromUser } from "../dtos/user.dto.js";
+import { UserDto } from "../entities/user.entity.js";
 import {
   DuplicateUserEmailError,
   NotFoundPreferencesError,
@@ -14,7 +15,7 @@ import {
 } from "../repositories/user.repository.js";
 
 // mission
-export const userSignUp = async (data) => {
+export const userSignUp = async (data: UserDto): Promise<UserDto> => {
   const {
     password,
     email,
@@ -71,9 +72,13 @@ export const userSignUp = async (data) => {
   return responseFromUser({ user, preferences: preferencesData });
 };
 
-export const userChangeInfo = async (userId, data) => {
+export const userChangeInfo = async (
+  userId: number,
+  data: UserDto
+): Promise<UserDto> => {
   const {
     password,
+    email,
     name,
     gender,
     birth,
@@ -85,6 +90,7 @@ export const userChangeInfo = async (userId, data) => {
 
   const updateUserId = await updateUser(userId, {
     password,
+    email,
     name,
     gender,
     birth,

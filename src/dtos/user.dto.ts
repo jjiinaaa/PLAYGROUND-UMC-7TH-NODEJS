@@ -1,4 +1,11 @@
-export const bodyToUser = (body) => {
+import {
+  user,
+  userPreferFood,
+  preferFood,
+  UserDto,
+} from "../entities/user.entity.js";
+
+export const bodyToUser = (body: any): UserDto => {
   const {
     password,
     email,
@@ -25,7 +32,13 @@ export const bodyToUser = (body) => {
   };
 };
 
-export const responseFromUser = ({ user, preferences }) => {
+export const responseFromUser = ({
+  user,
+  preferences,
+}: {
+  user: user;
+  preferences: (userPreferFood & { preferFood: preferFood })[]; // userPreferFood에 preferFood를 join한 결과
+}): any => {
   const preferFoods = preferences.map(
     (preference) => preference.preferFood.name
   );
@@ -49,7 +62,7 @@ export const responseFromUser = ({ user, preferences }) => {
     address,
     detailAddress,
     phoneNumber,
-    preferFoods,
     point,
+    preferences: preferFoods,
   };
 };

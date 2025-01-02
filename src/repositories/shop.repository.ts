@@ -1,7 +1,8 @@
 import { prisma } from "../db.config.js";
+import { shop, shopDto } from "../entities/shop.entity.js";
 
 // Shop 데이터 삽입
-export const addShop = async (shop) => {
+export const addShop = async (shop: shopDto): Promise<number | null> => {
   const { areaId, name, address, rating } = shop;
   const shopCheck = await prisma.shop.findFirst({
     where: { areaId, name },
@@ -16,7 +17,7 @@ export const addShop = async (shop) => {
 };
 
 // Shop 정보 얻기
-export const getShop = async (shopId) => {
+export const getShop = async (shopId: number): Promise<shop> => {
   const shop = await prisma.shop.findFirstOrThrow({ where: { id: shopId } });
   return shop;
 };
